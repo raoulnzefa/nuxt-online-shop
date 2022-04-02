@@ -9,7 +9,7 @@
       <v-card-subtitle>Цена: {{ price }} $</v-card-subtitle>
 
       <v-card-actions>
-         <v-btn color="primary">В корзину</v-btn>
+         <v-btn :color="buttonColor" @click="handleClick">{{ buttonTitle }}</v-btn>
 
          <v-spacer></v-spacer>
 
@@ -30,6 +30,7 @@
 
 <script>
 export default {
+   name: 'AppProductItem',
    props: {
       id: Number,
       title: String,
@@ -39,13 +40,33 @@ export default {
       },
       image: String,
       price: Number,
+      product: Object,
+      isInCart: Boolean,
    },
-   data: () => ({
-      show: false,
-   }),
+   emmits: ['handle-add-to-cart', 'handle-delete-from-cart'],
+   data() {
+      return {
+         show: false,
+      }
+   },
+   computed: {
+      buttonTitle() {
+         return this.$props.isInCart ? 'Убрать из карзины' : 'В корзину';
+      },
+      buttonColor() {
+         return this.$props.isInCart ? "error" : "primary"
+      }
+   },
    methods: {
       navigateToProductPage(id) {
          this.$router.push(`/${id}`);
+      },
+      handleClick() {
+         if (!this.$props.isInCart) {
+            this.$emit('handle-add-to-cart', this.$props.product);
+         } else {
+            this.$emit('handle-delete-from-cart', this.$props.id);
+         }
       }
    }
 }

@@ -3,9 +3,18 @@ import productsService from '../api/services/productsService';
 export const state = () => ({
    currentPage: 1,
    totalItems: 1,
-   isLoading: false,
+   isLoading: true,
    products: []
 })
+
+export const getters = {
+   products: (state) => {
+      return state.products;
+   },
+   isLoading: (state) => {
+      return state.isLoading;
+   }
+}
 
 export const mutations = {
    LOAD_PRODUCTS(state, payload) {

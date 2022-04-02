@@ -2,12 +2,18 @@
   <v-container>
     <v-row>
       <v-col v-for="product in products" :key="product.id" cols="4">
+        <v-skeleton-loader v-if="isLoading" type="card-avatar, article, actions"></v-skeleton-loader>
         <AppProductItem
+          v-else
           :id="product.id"
           :title="product.title"
           :subtitle="product.subtitle"
           :price="product.price"
           :image="product.image"
+          :product="product"
+          :isInCart="checkItemIsInCart(product.id)"
+          @handle-add-to-cart="handleAddToCart"
+          @handle-delete-from-cart="handleDeleteFromCart"
         />
       </v-col>
     </v-row>
@@ -15,21 +21,33 @@
 </template>
 
 <script>
-import AppProductItem from "~/components/AppProductItem.vue";
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   name: "HomePage",
   data: () => ({}),
   computed: {
-    products() {
-      return this.$store.state.home.products;
-    },
-    isLoading() {
-      return this.$store.state.home.isLoading;
-    },
+    ...mapGetters("app", [
+      "checkItemIsInCart",
+    ]),
+    ...mapGetters("home", [
+      "isLoading",
+      "products",
+    ])
+  },
+  methods: {
+    ...mapActions("home", {
+      handleLoadProducts: 'LOAD_PRODUCTS'
+    }),
+    ...mapActions("app", {
+      handleInitCart: 'INIT_CART_ITEMS',
+      handleAddToCart: 'ADD_ITEM_TO_CART',
+      handleDeleteFromCart: 'DELETE_ITEM_FROM_CART',
+    }),
   },
   created() {
-    this.$store.dispatch("home/LOAD_PRODUCTS", 1);
+    this.handleInitCart()
+    this.handleLoadProducts(1);
   },
-  components: { AppProductItem }
 }
 </script>

@@ -1,5 +1,13 @@
 <template>
-   <v-container>
+   <v-container v-if="isLoading" style="height: 400px;">
+      <v-row class="fill-height" align-content="center" justify="center">
+         <v-col class="text-subtitle-1 text-center" cols="12">Загрузка</v-col>
+         <v-col cols="6">
+            <v-progress-linear color="primary accent-4" indeterminate rounded height="6"></v-progress-linear>
+         </v-col>
+      </v-row>
+   </v-container>
+   <v-container v-else>
       <v-row>
          <v-col cols="12">
             <v-btn class="ma-2" outlined color="primary" @click="handleGoBack">
@@ -35,8 +43,6 @@
                   <v-card-subtitle class="text--primary">{{ product.manufacturer }}</v-card-subtitle>
                </div>
             </v-card>
-
-            <v-btn color="primary">В корзину</v-btn>
          </v-col>
       </v-row>
 
@@ -49,27 +55,34 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
    name: 'ProductPage',
+   data() {
+      return {}
+   },
    computed: {
       id() {
          return this.$route.params.id;
       },
       product() {
          return this.$store.state.product.data;
-      }
-   },
-   data() {
-      return {
+      },
+      isLoading() {
+         return this.$store.state.product.isLoading;
       }
    },
    methods: {
+      ...mapActions("product", {
+         getProduct: 'GET_PRODUCT'
+      }),
       handleGoBack() {
          this.$router.push('/')
       }
    },
    created() {
-      this.$store.dispatch('product/GET_PRODUCT', this.$route.params.id)
+      this.getProduct(this.id)
    }
 }
 </script>
