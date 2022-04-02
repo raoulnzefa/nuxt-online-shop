@@ -1,10 +1,8 @@
 import productsService from '../api/services/productsService';
 
 export const state = () => ({
-   currentPage: 1,
-   totalItems: 1,
-   isLoading: false,
-   products: []
+   theme: null,
+   cartItems: []
 })
 
 export const mutations = {

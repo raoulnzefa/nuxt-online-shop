@@ -3,7 +3,7 @@ import instance from "../apiConfig";
 //api endpoints
 const endpoints = {
    products: (page) => `category?page=${page}`,
-   productById: (productId) => `category/${productId}`
+   productById: (productId) => `product/${productId}`
 }
 
 //api requests
@@ -13,7 +13,7 @@ const productsService = {
       return response.data;
    },
    async getProductById(productId) {
-      const response = await instance.get(endpoints.products(productId));
+      const response = await instance.get(endpoints.productById(productId));
       return response.data;
    }
 }

@@ -1,16 +1,13 @@
 import productsService from '../api/services/productsService';
 
 export const state = () => ({
-   currentPage: 1,
-   totalItems: 1,
    isLoading: false,
-   products: []
+   data: {}
 })
 
 export const mutations = {
-   LOAD_PRODUCTS(state, payload) {
-      state.products = [...payload.products];
-      state.currentPage = payload.currentPage
+   SET_PRODUCT(state, payload) {
+      state.data = { ...payload.product };
    },
    TOGGLE_LOADING(state, payload) {
       state.isLoading = payload.isLoading
@@ -18,16 +15,15 @@ export const mutations = {
 }
 
 export const actions = {
-   async LOAD_PRODUCTS(context, page) {
+   async GET_PRODUCT(context, id) {
       context.commit({
          type: 'TOGGLE_LOADING',
          isLoading: true
       });
-      const products = await productsService.getProductsList(page);
+      const product = await productsService.getProductById(id);
       context.commit({
-         type: 'LOAD_PRODUCTS',
-         products: products.data,
-         currentPage: products.current_page
+         type: 'SET_PRODUCT',
+         product,
       });
       context.commit({
          type: 'TOGGLE_LOADING',
