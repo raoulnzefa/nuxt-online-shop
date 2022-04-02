@@ -3,8 +3,8 @@ export const state = () => ({
 })
 
 export const getters = {
-   getCartItemsLength: (state) => {
-      return state.cartItems.length
+   cartItems: (state) => {
+      return state.cartItems
    },
    checkItemIsInCart: (state) => (id) => {
       return state.cartItems.some(item => item.id === id);

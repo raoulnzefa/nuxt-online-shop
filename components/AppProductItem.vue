@@ -54,7 +54,7 @@ export default {
          return this.$props.isInCart ? 'Убрать из карзины' : 'В корзину';
       },
       buttonColor() {
-         return this.$props.isInCart ? "error" : "primary"
+         return this.$props.isInCart ? "error" : "success"
       }
    },
    methods: {

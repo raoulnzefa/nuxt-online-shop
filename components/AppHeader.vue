@@ -4,9 +4,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-         <v-icon>mdi-cart</v-icon>
-      </v-btn>
+      <AppCartDialog />
    </v-app-bar>
 </template>
 
