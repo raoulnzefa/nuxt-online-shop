@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col v-for="product in products" :key="product.id" cols="4">
+      <v-col v-for="product in products" :key="product.id" md="4" sm="6" xs="12">
         <v-skeleton-loader v-if="isLoading" type="card-avatar, article, actions"></v-skeleton-loader>
         <AppProductItem
           v-else
