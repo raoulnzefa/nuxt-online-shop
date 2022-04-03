@@ -4,6 +4,7 @@
 
       <v-spacer></v-spacer>
 
+      <AppThemeSwitch class="mr-5" />
       <AppCartDialog />
    </v-app-bar>
 </template>

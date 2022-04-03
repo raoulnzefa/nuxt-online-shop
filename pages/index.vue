@@ -17,6 +17,13 @@
         />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12">
+        <div class="text-center">
+          <v-pagination v-model="currentPage" :length="paginatorLength"></v-pagination>
+        </div>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -25,7 +32,11 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: "HomePage",
-  data: () => ({}),
+  data() {
+    return {
+      currentPage: 1,
+    }
+  },
   computed: {
     ...mapGetters("app", [
       "checkItemIsInCart",
@@ -33,21 +44,27 @@ export default {
     ...mapGetters("home", [
       "isLoading",
       "products",
+      'paginatorLength'
     ])
   },
   methods: {
     ...mapActions("home", {
-      handleLoadProducts: 'LOAD_PRODUCTS'
+      handleLoadProducts: "LOAD_PRODUCTS"
     }),
     ...mapActions("app", {
-      handleInitCart: 'INIT_CART_ITEMS',
-      handleAddToCart: 'ADD_ITEM_TO_CART',
-      handleDeleteFromCart: 'DELETE_ITEM_FROM_CART',
+      handleInitCart: "INIT_CART_ITEMS",
+      handleAddToCart: "ADD_ITEM_TO_CART",
+      handleDeleteFromCart: "DELETE_ITEM_FROM_CART",
     }),
   },
+  watch: {
+    currentPage(newPage, oldPage) {
+      this.handleLoadProducts(newPage);
+    }
+  },
   created() {
-    this.handleInitCart()
-    this.handleLoadProducts(1);
+    this.handleInitCart();
+    this.handleLoadProducts(this.currentPage);
   },
 }
 </script>

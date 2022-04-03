@@ -1,6 +1,7 @@
 import productsService from '../api/services/productsService';
 
 export const state = () => ({
+   itemPerPage: 30,
    currentPage: 1,
    totalItems: 1,
    isLoading: true,
@@ -8,6 +9,12 @@ export const state = () => ({
 })
 
 export const getters = {
+   currentPage: (state) => {
+      return state.currentPage;
+   },
+   paginatorLength: (state) => {
+      return Math.ceil(state.totalItems / state.itemPerPage);
+   },
    products: (state) => {
       return state.products;
    },
@@ -19,7 +26,7 @@ export const getters = {
 export const mutations = {
    LOAD_PRODUCTS(state, payload) {
       state.products = [...payload.products];
-      state.currentPage = payload.currentPage
+      state.totalItems = payload.totalItems
    },
    TOGGLE_LOADING(state, payload) {
       state.isLoading = payload.isLoading
@@ -36,7 +43,8 @@ export const actions = {
       context.commit({
          type: 'LOAD_PRODUCTS',
          products: products.data,
-         currentPage: products.current_page
+         currentPage: products.current_page,
+         totalItems: products.total
       });
       context.commit({
          type: 'TOGGLE_LOADING',
